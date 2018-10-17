@@ -17,6 +17,8 @@ for i in range(1, n*(n-1)+2, n):
     l_col.append(i)
 for i in range(n, n*n+1, n):
     r_col.append(i)
+for i in range(n,n*n-1,n):
+    r_col.append(i)
 
 
 # Generating Population
@@ -82,6 +84,7 @@ def generate_path():
             if k not in path:
                 path.append(k)
                 i += 1
+                print(k)
             # path.append(random.choice([path[i]+1,path[i]-1,path[i]+n,path[i]-n]))
         print(i)
     return path
