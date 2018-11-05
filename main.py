@@ -3,7 +3,8 @@ import random
 # Constant Parameters
 
 n = 4
-source = [1, 3, 5]
+source = [1, 3, 5, 6]
+destination = [7, 10, 15, 16]
 t_row = []       # top row
 b_row = []       # bottom row
 l_col = []       # left column
@@ -21,10 +22,11 @@ for i in range(n, n*n+1, n):
 
 # Generating Population
 
-def generate_path():
+ # s = source and d = destination
+def generate_path(s, d):
     path = []
     k = random.randint(3, 2*n-2)
-    path.append(random.choice(source))
+    path.append(s)
     i = 0
     while i < k-1:
         if path[i] in t_row:
@@ -83,7 +85,7 @@ def generate_path():
                 path.append(k)
                 i += 1
             # path.append(random.choice([path[i]+1,path[i]-1,path[i]+n,path[i]-n]))
-        print(i)
+        # print(i)
     return path
 
 
@@ -91,8 +93,10 @@ def initialize():
     population = []
     for _ in range(10):
         chromosome = []
-        for _ in range(4):
-            chromosome.append(generate_path())
+        # making zipped list for source-destination pair
+        l = list(zip(source, destination))
+        for i in range(4):
+            chromosome.append(generate_path(*l[i])
         population.append(chromosome)
     return population
 
@@ -102,6 +106,5 @@ def show(population):
         print(chromosome)
         print('')
 
-
-pop = initialize()
+pop=initialize()
 show(pop)
