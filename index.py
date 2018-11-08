@@ -12,7 +12,7 @@ for i in range(1,n+1):
         val[(i-1, j-1)] = n*i-n+j
 
 source = [1, 3, 5, 6]
-destination = [7, 10, 15, 16]
+destination = [16, 13, 16, 16]
 
 
 def generate_path(source, destination):
