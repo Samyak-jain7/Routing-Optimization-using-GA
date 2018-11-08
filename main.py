@@ -25,7 +25,7 @@ for i in range(n, n*n+1, n):
  # s = source and d = destination
 def generate_path(s, d):
     path = []
-    k = random.randint(3, 2*n-2)
+    k = random.randint(2, 2*n-2)
     path.append(s)
     i = 0
     while i < k-1:
@@ -35,57 +35,47 @@ def generate_path(s, d):
                 if k not in path:
                     path.append(k)
                     i += 1
-                # path.append(random.choice([path[i]+1,path[i]+n]))
             elif path[i] == n:
                 k = random.choice([path[i]-1, path[i]+n])
                 if k not in path:
                     path.append(k)
                     i += 1
-                # path.append(random.choice([path[i]-1,path[i]+n]))
             else:
                 k = random.choice([path[i]+1, path[i]-1, path[i]+n])
                 if k not in path:
                     path.append(k)
                     i += 1
-                # path.append(random.choice([path[i]+1,path[i]-1,path[i]+n]))
         elif path[i] in b_row:
             if path[i] == n*(n-1)+1:
                 k = random.choice([path[i]+1, path[i]-n])
                 if k not in path:
                     path.append(k)
                     i += 1
-                # path.append(random.choice([path[i]+1,path[i]-n]))
             elif path[i] == n*n:
                 k = random.choice([path[i]-1, path[i]-n])
                 if k not in path:
                     path.append(k)
                     i += 1
-                # path.append(random.choice([path[i]-1,path[i]-n]))
             else:
                 k = random.choice([path[i]+1, path[i]-1, path[i]-n])
                 if k not in path:
                     path.append(k)
                     i += 1
-                # path.append(random.choice([path[i]+1,path[i]-1,path[i]-n]))
         elif path[i] in l_col:
             k = random.choice([path[i]+n, path[i]-n, path[i]+1])
             if k not in path:
                 path.append(k)
                 i += 1
-            # path.append(random.choice([path[i]+n,path[i]-n,path[i]+1]))
         elif path[i] in r_col:
             k = random.choice([path[i]+n, path[i]-n, path[i]-1])
             if k not in path:
                 path.append(k)
                 i += 1
-            # path.append(random.choice([path[i]+n,path[i]-n,path[i]-1]))
         else:
             k = random.choice([path[i]+1, path[i]-1, path[i]+n, path[i]-n])
             if k not in path:
                 path.append(k)
                 i += 1
-            # path.append(random.choice([path[i]+1,path[i]-1,path[i]+n,path[i]-n]))
-        # print(i)
     return path
 
 
@@ -93,10 +83,9 @@ def initialize():
     population = []
     for _ in range(10):
         chromosome = []
-        # making zipped list for source-destination pair
-        l = list(zip(source, destination))
+        l = list(zip(source,destination))       # making zipped list for source-destination pair
         for i in range(4):
-            chromosome.append(generate_path(*l[i])
+            chromosome.append(generate_path(*l[i]))
         population.append(chromosome)
     return population
 
