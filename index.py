@@ -1,12 +1,13 @@
 import random
+from fitness import FitnessFunction,visualize
 
 # Constant Parameters
 
 n = 4
-xy  = {}    # Stores coordinate in xy form
+xy = {}    # Stores coordinate in xy form
 val = {}    # Stores value at coordinate
 
-for i in range(1,n+1):
+for i in range(1, n+1):
     for j in range(1, n+1):
         xy[n*i-n+j] = (i-1, j-1)
         val[(i-1, j-1)] = n*i-n+j
@@ -22,7 +23,7 @@ def generate_path(source, destination):
     while destination not in path:
         x = xy[path[-1]][0]
         y = xy[path[-1]][1]
-        if x < xy[d][0] and y < xy[d][1]:                                
+        if x < xy[d][0] and y < xy[d][1]:
             path.append(random.choice([val[(x+1, y)], val[(x, y+1)]]))
         elif x > xy[d][0] and y > xy[d][1]:
             path.append(random.choice([val[(x-1, y)], val[(x, y-1)]]))
@@ -45,7 +46,8 @@ def initialize():
     population = []
     for _ in range(10):
         chromosome = []
-        l = list(zip(source,destination))       # making zipped list for source-destination pair
+        # making zipped list for source-destination pair
+        l = list(zip(source, destination))
         for i in range(4):
             chromosome.append(generate_path(*l[i]))
         population.append(chromosome)
@@ -53,9 +55,13 @@ def initialize():
 
 
 def show(population):
-    for chromosome in pop:
+    for chromosome in population:
         print(chromosome)
         print('')
 
-pop=initialize()
-show(pop)
+
+population = initialize()
+show(population)
+print()
+visualize(FitnessFunction(population[0]))
+# show(pop)
