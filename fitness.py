@@ -2,8 +2,9 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import index
-n = index.n
+# import index
+# n = index.n
+n = 10
 
 def FitnessFunction(chromosome):
     # Frequency Matrix to find congestion
@@ -47,5 +48,5 @@ def visualize(frequency):
     ax.set_yticks([])
     ax.axis("off")
 
-    sns.heatmap(result, annot=label,vmin=0,vmax=n, fmt="",cmap="RdBu_r", linewidths=0.30, ax=ax)
+    sns.heatmap(result, annot=label, fmt="",cmap="RdYlGn_r", linewidths=0.30, ax=ax)
     plt.show()
