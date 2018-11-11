@@ -2,7 +2,8 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-n = 4
+import index
+n = index.n
 
 def FitnessFunction(chromosome):
     # Frequency Matrix to find congestion
