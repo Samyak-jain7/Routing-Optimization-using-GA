@@ -36,7 +36,7 @@ def visualize(frequency):
     # print(index)
 
     result = df.pivot(index="Y", columns="X", values="Data")
-    label = (np.asarray(["{0} \n".format(ind, dat) for ind, dat in zip(index.flatten(), data.flatten())])).reshape(n, n)
+    label = (np.asarray(['{0} \n'.format(ind, dat) for ind, dat in zip(index.flatten(), data.flatten())])).reshape(n, n)
 
     fig, ax = plt.subplots(figsize=(12, 7))
     title = "Congestion Visualization"
