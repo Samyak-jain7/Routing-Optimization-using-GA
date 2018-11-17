@@ -130,6 +130,13 @@ def tournament(population):
     return chrom1, chrom2
 
 
+def crossover(chrome1, chrome2):                    # Applying Uniform Crossover
+    offspring = []
+    for i in range(num_of_sourcedest):
+        offspring.append(random.choice([chrome1[i], chrome2[i]]))
+    return offspring
+
+
 if __name__ == "__main__":
     # Constant Parameters
 
@@ -150,11 +157,11 @@ if __name__ == "__main__":
     # Main Code starts here
 
     population = initialize()
-    show(population)
-    print()
+    # show(population)
+    # print()
     fitness_value = FitnessFunction(population)
-    tournament(population)
-    # print(fitness)
+    chrom1, chrom2 = tournament(population)
+    offspring = crossover(chrom1, chrom2)
+    # print(chrom1,chrom2,offspring,sep='\n')
     # for chromosome in population:
     #     fitness.visualize(fitness.FitnessValue(chromosome))
-    # show(pop)
