@@ -1,9 +1,9 @@
 import random
-from fitness import FitnessFunction,visualize
-
+# from fitness import FitnessFunction,visualize
+import fitness
 # Constant Parameters
 
-n = 10      # Mesh size(n x n)
+n = 4      # Mesh size(n x n)
 xy =  {}    # Stores coordinate in xy form
 val = {}    # Stores value at coordinate
 
@@ -12,10 +12,10 @@ for i in range(1, n+1):
         xy[n*i-n+j] = (i-1, j-1)
         val[(i-1, j-1)] = n*i-n+j
 
-num_of_chromosome = 10     # number of chromosome
-num_of_sourcedest = 10     # number of source-destination pairs
-source = [1, 3, 5, 6, 8, 12, 15, 19, 23, 25]
-destination = [16, 13, 50, 90, 100, 60, 65, 40, 43, 55]
+num_of_chromosome = 4     # number of chromosome
+num_of_sourcedest = 4     # number of source-destination pairs
+source = [1, 3, 5, 6]
+destination = [16,13,12,10]
 
 
 def generate_path(source, destination):
@@ -61,9 +61,9 @@ def show(population):
         print(chromosome)
         print('')
 
-
-population = initialize()
-show(population)
-print()
-visualize(FitnessFunction(population[0]))
-# show(pop)
+if __name__=="__main__":
+    population = initialize()
+    show(population)
+    print()
+    fitness.visualize(fitness.FitnessFunction(population[0]))
+    # show(pop)
