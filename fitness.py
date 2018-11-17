@@ -1,12 +1,12 @@
+import index
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import index
-n = index.n
+n = i.n
 
 
-def FitnessFunction(chromosome):
+def FitnessValue(chromosome):
     frequency = [0]*(n*n)           # Frequency Array to find congestion
     for l in chromosome:
         for x in l:
@@ -14,10 +14,10 @@ def FitnessFunction(chromosome):
     return frequency
 
 
-def FitnessValue(population):
+def FitnessFunction(population):
     fitness = []
     for chromosome in population:
-        fitness.append(FitnessFunction(chromosome))
+        fitness.append(FitnessValue(chromosome))
     return fitness
 
 

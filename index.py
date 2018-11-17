@@ -1,21 +1,10 @@
 import random
-# from fitness import FitnessFunction,visualize
-import fitness
-# Constant Parameters
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-n = 4      # Mesh size(n x n)
-xy = {}    # Stores coordinate in xy form
-val = {}    # Stores value at coordinate
-
-for i in range(1, n+1):
-    for j in range(1, n+1):
-        xy[n*i-n+j] = (i-1, j-1)
-        val[(i-1, j-1)] = n*i-n+j
-
-num_of_chromosome = 4     # number of chromosome
-num_of_sourcedest = 4     # number of source-destination pairs
-source = [1, 3, 5, 6]
-destination = [16, 13, 12, 10]
+# Population
 
 
 def generate_path(source, destination):
@@ -62,9 +51,110 @@ def show(population):
         print('')
 
 
+# Fitness Function
+
+def FitnessValue(chromosome):
+    frequency = [0]*(n*n)           # Frequency Array to find congestion
+    for l in chromosome:
+        for x in l:
+            frequency[x-1] += 1
+    return frequency
+
+
+def FitnessFunction(population):
+    fitness = []
+    for chromosome in population:
+        fitness.append(FitnessValue(chromosome))
+    return fitness
+
+
+def visualize(frequency):
+    df = pd.DataFrame()
+    y = []
+    x = []
+    for i in range(1, n+1):
+        for j in range(n):
+            y.append(i)
+    for i in range(n):
+        for j in range(1, n+1):
+            x.append(j)
+    df["Index"] = list(range(1, n*n+1))
+    df["Data"] = frequency
+    df["Y"] = y
+    df["X"] = x
+    # print(df)
+
+    data = np.asarray(df['Data']).reshape(n, n)
+    index = np.asarray(df['Index']).reshape(n, n)
+    # print(data)
+    # print(index)
+
+    result = df.pivot(index="Y", columns="X", values="Data")
+    label = (np.asarray(['{0} \n'.format(ind, dat) for ind, dat in zip(
+        index.flatten(), data.flatten())])).reshape(n, n)
+
+    fig, ax = plt.subplots(figsize=(12, 7))
+    title = "Congestion Visualization"
+    plt.title(title, fontsize=18)
+    ttl = ax.title
+    ttl.set_position([0.5, 1.05])
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.axis("off")
+
+    sns.heatmap(result, annot=label, fmt="",
+                cmap="RdYlGn_r", linewidths=0.30, ax=ax)
+    plt.show()
+
+
+# Selection
+
+def tournament(population):
+    # First Tournament
+    k = random.randint(2, n)
+    l = random.sample(population, k)
+    Max = 0
+    for chromosome in l:
+        if sum(FitnessValue(chromosome)) > Max:
+            chrom1 = chromosome
+
+    # Second Tournament
+    k = random.randint(2, n)
+    l = random.sample(population, k)
+    Max = 0
+    for chromosome in l:
+        if sum(FitnessValue(chromosome)) > Max:
+            chrom2 = chromosome
+
+    # print(chrom1, chrom2)
+    return chrom1, chrom2
+
+
 if __name__ == "__main__":
+    # Constant Parameters
+
+    n = 4      # Mesh size(n x n)
+    xy = {}    # Stores coordinate in xy form
+    val = {}    # Stores value at coordinate
+
+    for i in range(1, n+1):
+        for j in range(1, n+1):
+            xy[n*i-n+j] = (i-1, j-1)
+            val[(i-1, j-1)] = n*i-n+j
+
+    num_of_chromosome = 4     # number of chromosome
+    num_of_sourcedest = 4     # number of source-destination pairs
+    source = [1, 3, 5, 6]
+    destination = [16, 13, 12, 10]
+
+    # Main Code starts here
+
     population = initialize()
     show(population)
     print()
-    fitness.visualize(fitness.FitnessFunction(population[0]))
+    fitness_value = FitnessFunction(population)
+    tournament(population)
+    # print(fitness)
+    # for chromosome in population:
+    #     fitness.visualize(fitness.FitnessValue(chromosome))
     # show(pop)
