@@ -4,15 +4,21 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import index
 n = index.n
-# n = 10
+
 
 def FitnessFunction(chromosome):
-    # Frequency Matrix to find congestion
-    frequency = [0]*(n*n)
+    frequency = [0]*(n*n)           # Frequency Array to find congestion
     for l in chromosome:
         for x in l:
             frequency[x-1] += 1
     return frequency
+
+
+def FitnessValue(population):
+    fitness = []
+    for chromosome in population:
+        fitness.append(FitnessFunction(chromosome))
+    return fitness
 
 
 def visualize(frequency):
@@ -37,7 +43,8 @@ def visualize(frequency):
     # print(index)
 
     result = df.pivot(index="Y", columns="X", values="Data")
-    label = (np.asarray(['{0} \n'.format(ind, dat) for ind, dat in zip(index.flatten(), data.flatten())])).reshape(n, n)
+    label = (np.asarray(['{0} \n'.format(ind, dat) for ind, dat in zip(
+        index.flatten(), data.flatten())])).reshape(n, n)
 
     fig, ax = plt.subplots(figsize=(12, 7))
     title = "Congestion Visualization"
@@ -48,5 +55,6 @@ def visualize(frequency):
     ax.set_yticks([])
     ax.axis("off")
 
-    sns.heatmap(result, annot=label, fmt="",cmap="RdYlGn_r", linewidths=0.30, ax=ax)
+    sns.heatmap(result, annot=label, fmt="",
+                cmap="RdYlGn_r", linewidths=0.30, ax=ax)
     plt.show()

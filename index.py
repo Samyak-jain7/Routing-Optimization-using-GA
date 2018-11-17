@@ -4,7 +4,7 @@ import fitness
 # Constant Parameters
 
 n = 4      # Mesh size(n x n)
-xy =  {}    # Stores coordinate in xy form
+xy = {}    # Stores coordinate in xy form
 val = {}    # Stores value at coordinate
 
 for i in range(1, n+1):
@@ -15,7 +15,7 @@ for i in range(1, n+1):
 num_of_chromosome = 4     # number of chromosome
 num_of_sourcedest = 4     # number of source-destination pairs
 source = [1, 3, 5, 6]
-destination = [16,13,12,10]
+destination = [16, 13, 12, 10]
 
 
 def generate_path(source, destination):
@@ -61,7 +61,8 @@ def show(population):
         print(chromosome)
         print('')
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     population = initialize()
     show(population)
     print()
