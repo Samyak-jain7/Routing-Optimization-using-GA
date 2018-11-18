@@ -50,6 +50,9 @@ def show(population):
         print(chromosome)
         print('')
 
+# ============================================================================ #
+# ============================================================================ #
+
 
 # Fitness Function
 
@@ -62,9 +65,10 @@ def FitnessValue(chromosome):
 
 
 def FitnessFunction(population):
-    fitness = []
-    for chromosome in population:
-        fitness.append(FitnessValue(chromosome))
+    fitness = {}
+    for i in range(num_of_chromosome):
+        l = FitnessValue(population[i])
+        fitness[i+1] = sum([val-1 for val in l if val > 1])
     return fitness
 
 
@@ -107,24 +111,30 @@ def visualize(frequency):
     plt.show()
 
 
-# Selection
+# ============================================================================ #
+# ============================================================================ #
+
+
+# Selection and Crossover
 
 def tournament(population):
     # First Tournament
     k = random.randint(2, n)
     l = random.sample(population, k)
-    Max = 0
+    Min = 1000
     for chromosome in l:
-        if sum(FitnessValue(chromosome)) > Max:
+        if sum(FitnessValue(chromosome)) < Min:
             chrom1 = chromosome
+            Min = sum(FitnessValue(chromosome))
 
     # Second Tournament
     k = random.randint(2, n)
     l = random.sample(population, k)
-    Max = 0
+    Min = 1000
     for chromosome in l:
-        if sum(FitnessValue(chromosome)) > Max:
+        if sum(FitnessValue(chromosome)) < Min:
             chrom2 = chromosome
+            Min = sum(FitnessValue(chromosome))
 
     # print(chrom1, chrom2)
     return chrom1, chrom2
@@ -135,6 +145,9 @@ def crossover(chrome1, chrome2):                    # Applying Uniform Crossover
     for i in range(num_of_sourcedest):
         offspring.append(random.choice([chrome1[i], chrome2[i]]))
     return offspring
+
+# ============================================================================ #
+# ============================================================================ #
 
 
 if __name__ == "__main__":
@@ -151,17 +164,26 @@ if __name__ == "__main__":
 
     num_of_chromosome = 4     # number of chromosome
     num_of_sourcedest = 4     # number of source-destination pairs
+    num_of_generation = 10    # number of generation in our Genetic Algorithm
     source = [1, 3, 5, 6]
     destination = [16, 13, 12, 10]
 
     # Main Code starts here
 
     population = initialize()
-    # show(population)
-    # print()
+    show(population)
+    print()
     fitness_value = FitnessFunction(population)
-    chrom1, chrom2 = tournament(population)
-    offspring = crossover(chrom1, chrom2)
+
+    for i in range(num_of_generation):
+        chrom1, chrom2 = tournament(population)
+        offspring = crossover(chrom1, chrom2)
+        population.append(offspring)
+        l = FitnessValue(offspring)
+        fitness_value[num_of_chromosome+i+1] = sum([val-1 for val in l if val > 1])
+        print("Best Fitness value is {} till generation {}".format(
+            1/min(fitness_value.values()), i+1))
+    print(fitness_value)
     # print(chrom1,chrom2,offspring,sep='\n')
     # for chromosome in population:
-    #     fitness.visualize(fitness.FitnessValue(chromosome))
+    #     visualize(FitnessValue(chromosome))
