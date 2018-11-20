@@ -163,7 +163,9 @@ def mutate(population,mutation_rate):
         new_gene = generate_path(gene[0],gene[-1])
         population[random_chromosome][random_gene] = new_gene
         return population
-        
+
+
+
 
 # Main
 
@@ -195,7 +197,7 @@ if __name__ == "__main__":
 
     # for chromosome in population:
     #     visualize(FitnessValue(chromosome))
-
+    progress = []
     for i in range(num_of_generation):
         chrom1, chrom2 = tournament(population)
         offspring = crossover(chrom1, chrom2)
@@ -205,7 +207,12 @@ if __name__ == "__main__":
                       1] = sum([val-1 for val in l if val > 1])
         print("Best Fitness value is {} till generation {}".format(
             1/(1+min(fitness_value.values())), i+1))
+        progress.append(1/(1+min(fitness_value.values())))
         population = mutate(population, mutation_rate=0.5)
+    plt.plot(progress)
+    plt.ylabel('Fitness Value')
+    plt.xlabel('Generation')
+    plt.show()
     # print(fitness_value)
     # print(chrom1,chrom2,offspring,sep='\n')
     # for chromosome in population:
