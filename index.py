@@ -120,7 +120,7 @@ def visualize(frequency):
 
 def tournament(population):
     # First Tournament
-    k = random.randint(2, n)
+    k = random.randint(2, num_of_sourcedest)
     l = random.sample(population, k)
     Min = 1000
     for chromosome in l:
@@ -129,7 +129,7 @@ def tournament(population):
             Min = sum(FitnessValue(chromosome))
 
     # Second Tournament
-    k = random.randint(2, n)
+    k = random.randint(2, num_of_sourcedest)
     l = random.sample(population, k)
     Min = 1000
     for chromosome in l:
@@ -173,16 +173,16 @@ def mutate(population,mutation_rate):
 if __name__ == "__main__":
     # Constant Parameters
 
-    n = 6      # Mesh size(n x n)
+    n = 6       # Mesh size(n x n)
     xy =  {}    # Stores coordinate in xy form
-    val = {}   # Stores value at coordinate
+    val = {}    # Stores value at coordinate
 
     for i in range(1, n+1):
         for j in range(1, n+1):
             xy[n*i-n+j] = (i-1, j-1)
             val[(i-1, j-1)] = n*i-n+j
 
-    num_of_chromosome = 8      # number of chromosome
+    num_of_chromosome = 4      # number of chromosome
     num_of_sourcedest = 4     # number of source-destination pairs
     num_of_generation = 2000     # number of generation in our Genetic Algorithm
     source = [7, 8, 11, 12]
@@ -195,8 +195,9 @@ if __name__ == "__main__":
     print()
     fitness_value = FitnessFunction(population)
 
-    # for chromosome in population:
-    #     visualize(FitnessValue(chromosome))
+    for chromosome in population:
+        visualize(FitnessValue(chromosome))
+    
     progress = []
     for i in range(num_of_generation):
         chrom1, chrom2 = tournament(population)
