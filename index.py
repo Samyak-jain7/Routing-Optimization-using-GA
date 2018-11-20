@@ -1,3 +1,4 @@
+import math
 import random
 import numpy as np
 import pandas as pd
@@ -106,7 +107,7 @@ def visualize(frequency):
     ax.set_yticks([])
     ax.axis("off")
 
-    sns.heatmap(result, annot=label, fmt="",
+    sns.heatmap(result, vmin=0, vmax=n, annot=label, fmt="",
                 cmap="RdYlGn_r", linewidths=0.30, ax=ax)
     plt.show()
 
@@ -150,23 +151,40 @@ def crossover(chrome1, chrome2):                    # Applying Uniform Crossover
 # ============================================================================ #
 
 
+# Mutation
+
+def mutate(population,mutation_rate):
+    k = math.ceil(mutation_rate*len(population))
+    for _ in range(k):
+        random_chromosome = random.randint(0,len(population)-1)
+        chromosome = population[random_chromosome]
+        random_gene = random.randint(0,len(chromosome)-1)
+        gene = chromosome[random_gene]
+        new_gene = generate_path(gene[0],gene[-1])
+        population[random_chromosome][random_gene] = new_gene
+        return population
+        
+
+# Main
+
+
 if __name__ == "__main__":
     # Constant Parameters
 
-    n = 4      # Mesh size(n x n)
-    xy = {}    # Stores coordinate in xy form
-    val = {}    # Stores value at coordinate
+    n = 6      # Mesh size(n x n)
+    xy =  {}    # Stores coordinate in xy form
+    val = {}   # Stores value at coordinate
 
     for i in range(1, n+1):
         for j in range(1, n+1):
             xy[n*i-n+j] = (i-1, j-1)
             val[(i-1, j-1)] = n*i-n+j
 
-    num_of_chromosome = 4     # number of chromosome
+    num_of_chromosome = 8      # number of chromosome
     num_of_sourcedest = 4     # number of source-destination pairs
-    num_of_generation = 10    # number of generation in our Genetic Algorithm
-    source = [1, 3, 5, 6]
-    destination = [16, 13, 12, 10]
+    num_of_generation = 2000     # number of generation in our Genetic Algorithm
+    source = [7, 8, 11, 12]
+    destination = [21, 22, 27, 32]
 
     # Main Code starts here
 
@@ -175,15 +193,20 @@ if __name__ == "__main__":
     print()
     fitness_value = FitnessFunction(population)
 
+    # for chromosome in population:
+    #     visualize(FitnessValue(chromosome))
+
     for i in range(num_of_generation):
         chrom1, chrom2 = tournament(population)
         offspring = crossover(chrom1, chrom2)
         population.append(offspring)
         l = FitnessValue(offspring)
-        fitness_value[num_of_chromosome+i+1] = sum([val-1 for val in l if val > 1])
+        fitness_value[num_of_chromosome+i +
+                      1] = sum([val-1 for val in l if val > 1])
         print("Best Fitness value is {} till generation {}".format(
-            1/min(fitness_value.values()), i+1))
-    print(fitness_value)
+            1/(1+min(fitness_value.values())), i+1))
+        population = mutate(population, mutation_rate=0.5)
+    # print(fitness_value)
     # print(chrom1,chrom2,offspring,sep='\n')
     # for chromosome in population:
     #     visualize(FitnessValue(chromosome))
