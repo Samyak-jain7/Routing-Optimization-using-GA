@@ -209,6 +209,8 @@ if __name__ == "__main__":
         print("Best Fitness value is {} till generation {}".format(
             1/(1+min(fitness_value.values())), i+1))
         progress.append(1/(1+min(fitness_value.values())))
+        if progress[-1]==1:
+            break
         population = mutate(population, mutation_rate=0.5)
     plt.plot(progress)
     plt.ylabel('Fitness Value')
