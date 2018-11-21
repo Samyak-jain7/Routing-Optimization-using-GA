@@ -1,5 +1,6 @@
 import math
 import random
+from collections import OrderedDict
 import numpy as np
 import pandas as pd
 import seaborn as sns
@@ -153,28 +154,26 @@ def crossover(chrome1, chrome2):                    # Applying Uniform Crossover
 
 # Mutation
 
-def mutate(population,mutation_rate):
+def mutate(population, mutation_rate):
     k = math.ceil(mutation_rate*len(population))
     for _ in range(k):
-        random_chromosome = random.randint(0,len(population)-1)
+        random_chromosome = random.randint(0, len(population)-1)
         chromosome = population[random_chromosome]
-        random_gene = random.randint(0,len(chromosome)-1)
+        random_gene = random.randint(0, len(chromosome)-1)
         gene = chromosome[random_gene]
-        new_gene = generate_path(gene[0],gene[-1])
+        new_gene = generate_path(gene[0], gene[-1])
         population[random_chromosome][random_gene] = new_gene
         return population
 
 
-
-
 # Main
-
-
+# chromosome = [[7,13]]
+# print(FitnessValue(chromosome))
 if __name__ == "__main__":
     # Constant Parameters
 
     n = 6       # Mesh size(n x n)
-    xy =  {}    # Stores coordinate in xy form
+    xy = {}    # Stores coordinate in xy form
     val = {}    # Stores value at coordinate
 
     for i in range(1, n+1):
@@ -182,11 +181,11 @@ if __name__ == "__main__":
             xy[n*i-n+j] = (i-1, j-1)
             val[(i-1, j-1)] = n*i-n+j
 
-    num_of_chromosome = 4      # number of chromosome
-    num_of_sourcedest = 4     # number of source-destination pairs
-    num_of_generation = 2000     # number of generation in our Genetic Algorithm
-    source = [7, 8, 11, 12]
-    destination = [21, 22, 27, 32]
+    num_of_chromosome = 7      # number of chromosome
+    num_of_sourcedest = 7     # number of source-destination pairs
+    num_of_generation = 2500     # number of generation in our Genetic Algorithm
+    source = [7, 8, 11, 12, 1, 1, 2]
+    destination = [21, 22, 27, 32, 6, 4,36]
 
     # Main Code starts here
 
@@ -195,9 +194,9 @@ if __name__ == "__main__":
     print()
     fitness_value = FitnessFunction(population)
 
-    for chromosome in population:
-        visualize(FitnessValue(chromosome))
-    
+    # for chromosome in population:
+    #     visualize(FitnessValue(chromosome))
+
     progress = []
     for i in range(num_of_generation):
         chrom1, chrom2 = tournament(population)
@@ -209,9 +208,11 @@ if __name__ == "__main__":
         print("Best Fitness value is {} till generation {}".format(
             1/(1+min(fitness_value.values())), i+1))
         progress.append(1/(1+min(fitness_value.values())))
-        if progress[-1]==1:
-            break
         population = mutate(population, mutation_rate=0.5)
+        if progress[-1] == 1:
+            break
+    key = min(fitness_value,key = fitness_value.get)
+    print(population[key-1])
     plt.plot(progress)
     plt.ylabel('Fitness Value')
     plt.xlabel('Generation')
